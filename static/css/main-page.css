@@ -1,0 +1,299 @@
+/*
+ * CSS for the main page
+ *
+ * Author: Smith Dhumbumroong <zodmaner@gmail.com>
+ */
+
+/* Resets the margin and padding of all elements */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* Removes an underscore decoration from all links */
+a {
+    text-decoration: none;
+}
+
+/* Sets the height to full in order to have a "full page" effect */
+html, body {
+    height: 100%;
+}
+
+/*
+ * Styles for the header
+ */
+header {
+    background: #aa0000;
+
+    border-bottom: 5px solid #ebeae8;
+
+    height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+/* Styles for the left block of the header */
+#header-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* Styles for the right block of the header */
+#header-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+/* Styles for the base div for each element in the header block */
+.header-elt {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    color: #fff;
+    font-weight: bold;
+}
+
+.header-elt > img {
+    height: 80px;
+}
+
+.header-elt > a {
+    color: #fff;
+}
+
+/* tyles for the (currently) selected div of the header block */
+.header-selected-elt {
+    border-bottom: 5px solid #333;
+
+    padding-top: 5px; /* added to compensated for the bottom border */
+    padding-left: 10px;
+    padding-right: 10px;
+
+    color: #fff;
+    font-weight: bold;
+
+    height: 100%;
+
+    display: flex;
+}
+
+.header-selected-elt:hover {
+    background: #333;
+
+    border-bottom: 5px solid #ff0000;
+}
+
+.header-selected-elt > a {
+    color: #fff;
+
+    align-self: center;
+}
+
+.header-selected-elt > a:hover {
+    color: #ff0000;
+
+    align-self: center;
+}
+
+/* Styles for the interactive divs of the header block */
+.header-interactive-elt {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    color: #fff;
+    font-weight: bold;
+
+    height: 100%;
+
+    display: flex;
+}
+
+.header-interactive-elt:hover {
+    background: #333;
+
+    border-bottom: 5px solid #ff0000;
+
+    padding-top: 5px; /* added to compensated for the bottom border */
+
+    height: 100%;
+}
+
+.header-interactive-elt > a {
+    color: #fff;
+
+    align-self: center;
+}
+
+.header-interactive-elt > a:hover {
+    color: #ff0000;
+}
+
+/*
+ * Styles of the rest of the page, which are inside a container div
+ */
+#container {
+    background: #ecebe9;
+
+    min-height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+/*
+ * Styles of the main "frame" of the page
+ */
+#main-content {
+    background: #fff;
+    
+    margin: 15px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    padding: 20px;
+
+    flex: 80%;
+    order: 2;
+}
+
+#main-content > hr {
+    border: 1px solid #aa0000;
+}
+
+#main-content > h1 {
+    color: #000;
+}
+
+#main-content .vm-spec-container {
+    margin-left: 35%;
+    margin-right: 35%;
+
+    padding: 15px;
+
+    text-align: center;
+
+    border: 2px dotted #aa0000;
+}
+
+.vm-spec-container > h4 {
+    text-align: left;
+    
+    color: #aa0000;
+}
+
+.vm-spec-container > hr {
+    border: 1px solid #aa0000;
+}
+
+.vm-spec-container > table {
+    margin: 0 auto;
+    
+    text-align: left;
+}
+
+.vm-spec-container > table > tbody > tr > td > b {
+    padding-right: 40px;
+}
+
+#main-content .link-container {
+    margin: 15px;
+    
+    text-align: center;
+}
+
+#main-content .link-container > a {
+    border: 1px solid #aa0000;
+
+    padding: 10px;
+
+    color: #aa0000;
+
+    font-weight: bold;
+}
+
+#main-content .link-container >a:hover {
+    background: #aa0000;
+
+    color: #fff;
+}
+
+/*
+ * Styles for the side bar
+ */
+#side-bar {
+    background: #fff;
+
+    margin: 15px;
+
+    padding: 10px;
+    flex: 20%;
+    order: 1;
+
+    display: flex;
+    align-item: center;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Styles for the base side-bar div */
+#side-bar .side-bar-elt {
+    padding: 10px;
+
+    font-weight: bold;
+}
+
+/* Styles for the (currently) selected side-bar link */
+#side-bar .side-bar-selected-elt {
+    padding: 10px;
+
+    background: #333;
+
+    font-weight: bold;
+}
+
+#side-bar .side-bar-selected-elt > a {
+    color: #fff;
+}
+
+#side-bar .side-bar-selected-elt > a:hover {
+    color: #ff0000;
+}
+
+/* Styles for the interactive side-bar links */
+#side-bar .side-bar-elt > a {
+    color: #000;
+}
+
+#side-bar .side-bar-elt:hover {
+    background: #333;
+}
+
+#side-bar .side-bar-elt:hover > a {
+    color: #fff;
+}
+
+#side-bar .side-bar-elt > a:hover {
+    color: #ff0000;
+}
+
+/*
+ * Styles for the watermark at the bottom of the page
+ */
+#watermark {
+    background: #333;
+
+    color: #fff;
+
+    text-align: center;
+    font-size: 80%;
+}
