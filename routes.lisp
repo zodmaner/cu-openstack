@@ -29,13 +29,13 @@
                                        "/vm-provisioning/users/"
                                        (hunchentoot:session-value :username)))))
 
-(defun construct-unique-user-uri-path (request)
+(defun match-unique-user-uri-path (request)
   (string= (concatenate 'string
                         "/vm-provisioning/users/"
                         (hunchentoot:session-value :username))
            (hunchentoot:request-uri request)))
 
-(hunchentoot:define-easy-handler (main-page :uri #'construct-unique-user-uri-path) ()
+(hunchentoot:define-easy-handler (main-page :uri #'match-unique-user-uri-path) ()
   (if (string= "true" (hunchentoot:session-value :auth-token))
       (create-main-page :page-uri (hunchentoot:request-uri*)
                         :realname (hunchentoot:session-value :realname))
