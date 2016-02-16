@@ -4,9 +4,14 @@
 
 ;;; "openstack-rest-client" goes here. Hacks and glory await!
 
-(defvar *username-password* nil)
+(defvar *openstack-uri* "192.168.1.6")
+
+(defvar *username-password* (list :username "admin"
+                                  :password "htims@01"))
 
 (defvar *token-and-tenant-id* nil)
+
+(setf *token-and-tenant-id* (obtain-token-and-tenant-id *openstack-uri*))
 
 (defun get-token (&key (token-tenant-id *token-and-tenant-id*))
   (getf token-tenant-id :token))
@@ -129,7 +134,15 @@
                                                :get))
      :collect (cons (st-json:getjso "name" jso)
                     (list :id (st-json:getjso "id" jso)
-                          :status (st-json:getjso "status" jso)))))
+                          :status (st-json:getjso "status" jso)
+                          :addresses (loop
+                                        :for jso :in (st-json:getjso
+                                                      "private"
+                                                      (st-json:getjso
+                                                       "addresses"
+                                                       jso))
+                                        :collect (cons (st-json:getjso "OS-EXT-IPS:type" jso)
+                                                       (st-json:getjso "addr" jso)))))))
 
 (defun create-server (uri server-name image-id flavor-id
                       &key (token-tenant-id *token-and-tenant-id*))
