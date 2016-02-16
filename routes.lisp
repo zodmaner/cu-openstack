@@ -24,6 +24,8 @@
                                          "/login"))
 
 (hunchentoot:define-easy-handler (verify-auth-token-and-redirect :uri "/verify-and-redirect") ()
+  "Verifies the authentication token in the session cookie, and redirects a user towards
+the main page via a unique uri path."
   (when (string= "true" (hunchentoot:session-value :auth-token))
     (hunchentoot:redirect (concatenate 'string
                                        "/vm-provisioning/users/"
