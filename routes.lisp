@@ -39,8 +39,8 @@ the main page via a unique uri path."
 
 (hunchentoot:define-easy-handler (main-page :uri #'match-unique-user-uri-path) ()
   (if (string= "true" (hunchentoot:session-value :auth-token))
-      (create-main-page :page-uri (hunchentoot:request-uri*)
-                        :realname (hunchentoot:session-value :realname))
+      (create-vm-provisioning-main-page :page-uri (hunchentoot:request-uri*)
+                                        :realname (hunchentoot:session-value :realname))
       (hunchentoot:redirect "/login")))
 
 (hunchentoot:define-easy-handler (clear-session-and-redirect :uri "/clear-and-logout") ()
