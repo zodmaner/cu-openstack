@@ -58,9 +58,34 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
              (multiple-value-bind (second minute hour date month year) (get-decoded-time)
                (declare (ignore second minute hour date month))
                (cl-who:fmt "~A, " year))
-              "Smith Dhumbumroong")))))
+             "Smith Dhumbumroong")))))
 
-(defun create-main-page (&key (page-uri "/") (realname "nil"))
+(defun create-vm-provisioning-main-content (output-stream has_instant)
+  (cond (t
+         (cl-who:with-html-output (output-stream nil :indent t)
+           (:p "Currently, you don't have any active virtual machine instant.")
+           (:br)
+           (:p "Based on your credential, you have access to the following virtual machine:" )
+           (:br)
+           (:div :class "vm-spec-container"
+                 (:h4 "cirros-0.3.4-x86_64-uec")
+                 (:hr)
+                 (:br)
+                 (:table
+                  (:tr
+                   (:td (:b "CPU:"))
+                   (:td "1 vCPU"))
+                  (:tr
+                   (:td (:b "Memory:"))
+                   (:td "512 MB"))
+                  (:tr
+                   (:td (:b "HDD:"))
+                   (:td "1 GB"))))
+           (:br)
+           (:div :class "link-container"
+                 (:a :href "/main" "Launch a new instant"))))))
+
+(defun create-vm-provisioning-main-page (&key (page-uri "/") (realname "nil"))
   (cl-who:with-html-output-to-string (output-string nil :prologue t :indent t)
     (with-default-html-template (output-string "CU OpenStack System"
                                                "/static/css/main-page.css")
@@ -82,27 +107,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                   (:h1 "Your Virtual Machine Status")
                   (:hr)
                   (:br)
-                  (:p "Currently, you don't have any active virtual machine.")
-                  (:br)
-                  (:p "Based on your credential, you have access to the following virtual machine:" )
-                  (:br)
-                  (:div :class "vm-spec-container"
-                        (:h4 "CirrOS")
-                        (:hr)
-                        (:br)
-                        (:table
-                         (:tr
-                          (:td (:b "CPU:"))
-                          (:td "1 vCPU"))
-                         (:tr
-                          (:td (:b "Memory:"))
-                          (:td "1 GB"))
-                         (:tr
-                          (:td (:b "HDD:"))
-                          (:td "1 GB"))))
-                  (:br)
-                  (:div :class "link-container"
-                        (:a :href "/main" "Launch a new instant"))))
+                  (create-vm-provisioning-main-content output-string nil)))
       (:div :id "watermark"
             (:p
              "Copyright "
