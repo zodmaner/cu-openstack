@@ -102,7 +102,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                           (:td "1 GB"))))
                   (:br)
                   (:div :class "link-container"
-                        (:a :href "/main" "Provision a new instant of the virtual machine"))))
+                        (:a :href "/main" "Provision a new instant"))))
       (:div :id "watermark"
             (:p
              "Copyright "
@@ -110,4 +110,3 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                (declare (ignore second minute hour date month))
                (cl-who:fmt "~A, " year))
              "Smith Dhumbumroong")))))
-
