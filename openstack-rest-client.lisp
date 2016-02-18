@@ -4,14 +4,11 @@
 
 ;;; "openstack-rest-client" goes here. Hacks and glory await!
 
-(defvar *openstack-uri* "192.168.1.6")
+(defvar *openstack-uri* nil)
 
-(defvar *username-password* (list :username "admin"
-                                  :password "htims@01"))
+(defvar *username-password* nil)
 
 (defvar *token-and-tenant-id* nil)
-
-(setf *token-and-tenant-id* (obtain-token-and-tenant-id *openstack-uri*))
 
 (defun get-token (&key (token-tenant-id *token-and-tenant-id*))
   (getf token-tenant-id :token))
@@ -153,7 +150,7 @@
     (send-api-request-with-auth token-tenant-id
                                 uri
                                 "8774"
-                                (create-uri-path "/v2/"
+                                (create-uri-path "/v2.1/"
                                                  (get-tenant-id) "/servers")
                                 :post
                                 :content (st-json:write-json-to-string
@@ -163,6 +160,16 @@
                                                   (list "name" server-name
                                                         "imageRef" image-id
                                                         "flavorRef" flavor-id)))))))))
+
+(defun delete-server (uri server-id &key (token-tenant-id *token-and-tenant-id*))
+  (send-api-request-with-auth token-tenant-id
+                              uri
+                              "8774"
+                              (create-uri-path "/v2.1/"
+                                               (get-tenant-id)
+                                               "/servers/"
+                                               server-id)
+                              :delete))
 
 (defun list-floating-ips (uri &key (token-tenant-id *token-and-tenant-id*))
   (loop
@@ -206,3 +213,58 @@
                                          (list "addFloatingIp"
                                                (alexandria:plist-hash-table
                                                 (list "address" floating-ip)))))))
+
+(defun list-default-security-group-rules (uri &key (token-tenant-id *token-and-tenant-id*))
+  (send-api-request-with-auth token-tenant-id
+                              uri
+                              "8774"
+                              (create-uri-path "/v2.1/"
+                                               (get-tenant-id)
+                                               "/os-security-group-default-rules")
+                              :get))
+
+(defun create-default-security-group-rule (uri rule &key (token-tenant-id *token-and-tenant-id*))
+  (send-api-request-with-auth token-tenant-id
+                              uri
+                              "8774"
+                              (create-uri-path "/v2.1/"
+                                               (get-tenant-id)
+                                               "/os-security-group-default-rules")
+                              :post
+                              :content rule))
+
+(defun set-security-rule-accept-all-icmp (uri &key (token-tenant-id *token-and-tenant-id*))
+  (create-default-security-group-rule uri
+                                      (st-json:write-json-to-string
+                                       (alexandria:plist-hash-table
+                                        (list "security_group_default_rule"
+                                              (alexandria:plist-hash-table
+                                               (list "ip_protocol" "ICMP"
+                                                     "from_port" "-1"
+                                                     "to_port" "-1"
+                                                     "cidr" "0.0.0.0/0")))))
+                                      :token-tenant-id token-tenant-id))
+
+(defun set-security-rule-accept-all-tcp (uri &key (token-tenant-id *token-and-tenant-id*))
+  (create-default-security-group-rule uri
+                                      (st-json:write-json-to-string
+                                       (alexandria:plist-hash-table
+                                        (list "security_group_default_rule"
+                                              (alexandria:plist-hash-table
+                                               (list "ip_protocol" "TCP"
+                                                     "from_port" "1"
+                                                     "to_port" "65535"
+                                                     "cidr" "0.0.0.0/0")))))
+                                      :token-tenant-id token-tenant-id))
+
+(defun set-security-rule-accept-all-udp (uri &key (token-tenant-id *token-and-tenant-id*))
+  (create-default-security-group-rule uri
+                                      (st-json:write-json-to-string
+                                       (alexandria:plist-hash-table
+                                        (list "security_group_default_rule"
+                                              (alexandria:plist-hash-table
+                                               (list "ip_protocol" "UDP"
+                                                     "from_port" "1"
+                                                     "to_port" "65535"
+                                                     "cidr" "0.0.0.0/0")))))
+                                      :token-tenant-id token-tenant-id))
