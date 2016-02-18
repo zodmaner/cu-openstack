@@ -10,6 +10,7 @@
                #:st-json)
   :serial t
   :components ((:file "package")
+               (:file "config")
                (:file "openstack-rest-client")
                (:file "auth")
                (:file "views")
