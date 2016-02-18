@@ -187,6 +187,8 @@ header {
 
 .vm-spec-container > h4 {
     text-align: left;
+
+    padding: 4px;
     
     color: #aa0000;
 }
