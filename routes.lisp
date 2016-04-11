@@ -27,7 +27,7 @@
   "Verifies the authentication token in the session cookie, and redirects a user towards
 the main page via a unique uri path for each user."
   (when (string= "true" (hunchentoot:session-value :auth-token))
-    (setf *token-and-tenant-id* (obtain-token-and-tenant-id *openstack-uri*))
+    (t-os:define-global-endpoints-and-token "172.16.2.101" "admin" "1234")
     (hunchentoot:redirect (concatenate 'string
                                        "/vm-provisioning/users/"
                                        (hunchentoot:session-value :username)))))
@@ -41,35 +41,34 @@ the main page via a unique uri path for each user."
 (hunchentoot:define-easy-handler (vm-provisioning :uri #'match-unique-user-uri-path) ()
   (if (string= "true" (hunchentoot:session-value :auth-token))
       (create-vm-provisioning-main-page :vm-name (hunchentoot:session-value :vm-name)
-                                        :vm-status (get-resource-id
-                                                    (concatenate 'string
-                                                                 (hunchentoot:session-value :role)
-                                                                 "-"
-                                                                 (hunchentoot:session-value :username))
-                                                    (list-servers-detail *openstack-uri*))
+                                        :vm-status (t-os:cdr-assoc
+                                                    (format nil "~A-~A"
+                                                            (hunchentoot:session-value :role)
+                                                            (hunchentoot:session-value :username))
+                                                    (t-os:list-servers-detail))
                                         :page-uri (hunchentoot:request-uri*)
                                         :realname (hunchentoot:session-value :realname))
       (hunchentoot:redirect "/login")))
 
 (hunchentoot:define-easy-handler (launch-new-vm-instant :uri "/launch-a-new-instant") ()
-  (let ((instant-name (concatenate 'string
-                                   (hunchentoot:session-value :role)
-                                   "-"
-                                   (hunchentoot:session-value :username))))
-    (setf *token-and-tenant-id* (obtain-token-and-tenant-id *openstack-uri*))
-    (create-server *openstack-uri*
-                   instant-name
-                   (get-resource-id (hunchentoot:session-value :vm-name) (list-images *openstack-uri*))
-                   (get-resource-id "m1.tiny" (list-flavors *openstack-uri*)))
+  (let ((instant-name (format nil "~A-~A"
+                              (hunchentoot:session-value :role)
+                              (hunchentoot:session-value :username))))
+    (t-os:create-server instant-name
+                        (t-os:cdr-assoc (hunchentoot:session-value :vm-name)
+                                        (t-os:list-images))
+                        (t-os:cdr-assoc "m1.tiny"
+                                        (t-os:list-flavors)))
     (loop
-       :while (string/= "ACTIVE" (getf (get-resource-id instant-name (list-servers-detail *openstack-uri*))
-                                       :status))
+       :while (string/= "ACTIVE"
+                        (t-os:cdr-assoc "status"
+                                        (t-os:cdr-assoc instant-name
+                                                        (t-os:list-servers-detail))))
        :do
        (sleep 1))
-    (let ((floating-ip (create-floating-ip *openstack-uri*)))
-      (associate-floating-ip *openstack-uri*
-                             (get-resource-id instant-name (list-servers *openstack-uri*))
-                             floating-ip))
+    (let ((floating-ip (t-os:create-floating-ip)))
+      (t-os:associate-floating-ip (t-os:cdr-assoc "instant-name" (t-os:list-servers))
+                                  floating-ip))
     (hunchentoot:redirect (concatenate 'string
                                        "/vm-provisioning/users/"
                                        (hunchentoot:session-value :username)))))
