@@ -1,12 +1,12 @@
-;;;; views.lisp
+;;;; templates.lisp
 
 (in-package #:cu-openstack)
 
-;;; Views are defined here.
+;;; Template functions that generate HTML are defined here.
 
 (setf (cl-who:html-mode) :html5)
 
-;;; Template definitions
+;;; Base templates
 
 (defmacro with-base-html-template ((output-stream &rest html-head) &body body)
   "Generates a web page with the enclosed HTML head and body using the base HTML template
@@ -31,9 +31,9 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                                (:link :rel "stylesheet" :href (cl-who:str ,path-to-css)))
        ,@body)))
 
-;;; View definitions
+;;; Template definitions
 
-(defun create-login-page ()
+(defun make-login-page ()
   "Creates the log-in page."
   (cl-who:with-html-output-to-string (output-string nil :prologue t :indent t)
     (with-default-html-template (output-string "Welcome to CU OpenStack System"
@@ -60,7 +60,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                (cl-who:fmt "~A, " year))
              "Smith Dhumbumroong")))))
 
-(defun create-vm-provisioning-main-content (output-stream vm-name vm-status)
+(defun make-vm-provisioning-main-content (output-stream vm-name vm-status)
   (cond ((string= "ACTIVE" (getf vm-status :status))
          (cl-who:with-html-output (output-stream nil :indent t)
            (:p "You have 1 active virtual machine instant:")
@@ -110,7 +110,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
            (:div :class "link-container"
                  (:a :href "/launch-a-new-instant" "Launch a new instant"))))))
 
-(defun create-vm-provisioning-main-page (&key vm-name vm-status (page-uri "/") (realname "nil"))
+(defun make-vm-provisioning-main-page (&key vm-name vm-status (page-uri "/") (realname "nil"))
   (cl-who:with-html-output-to-string (output-string nil :prologue t :indent t)
     (with-default-html-template (output-string "CU OpenStack System"
                                                "/static/css/main-page.css")
@@ -132,7 +132,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                   (:h1 "Your Virtual Machine Status")
                   (:hr)
                   (:br)
-                  (create-vm-provisioning-main-content output-string vm-name vm-status)))
+                  (make-vm-provisioning-main-content output-string vm-name vm-status)))
       (:div :id "watermark"
             (:p
              "Copyright "

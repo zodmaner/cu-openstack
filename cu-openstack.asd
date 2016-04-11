@@ -1,19 +1,28 @@
 ;;;; cu-openstack.asd
 
 (asdf:defsystem #:cu-openstack
-  :description "Describe cu-openstack here"
-  :author "Your Name <your.name@example.com>"
+  :description "A simple OpenStack web application/middleware."
+  :author "Smith Dhumbumroong <zodmaner@gmail.com>"
   :license "Specify license here"
   :depends-on (#:hunchentoot
                #:cl-who
-               #:drakma
-               #:st-json)
+               #:cl-pass
+               #:datafly
+               #:uri-template
+               #:trivial-openstack)
   :serial t
-  :components ((:file "package")
-               (:file "config")
-               (:file "openstack-rest-client")
-               (:file "auth")
-               (:file "views")
+  :components ((:module "models"
+                        :serial t
+                        :components
+                        ((:file "package")
+                         (:file "models")
+                         (:file "authentication")))
+               (:module "views"
+                        :serial t
+                        :components
+                        ((:file "package")
+                         (:file "views")))
+               (:file "package")
                (:file "routes")
                (:file "cu-openstack")))
 
