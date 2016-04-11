@@ -1,5 +1,5 @@
 ;;;; package.lisp
 
 (defpackage #:cu-openstack
-  (:use #:cl))
+  (:use #:cl #:trivial-openstack))
 
