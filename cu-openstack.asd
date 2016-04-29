@@ -3,7 +3,7 @@
 (asdf:defsystem #:cu-openstack
   :description "A simple OpenStack web application/middleware."
   :author "Smith Dhumbumroong <zodmaner@gmail.com>"
-  :license "Specify license here"
+  :license "MIT"
   :depends-on (#:hunchentoot
                #:cl-who
                #:cl-pass
