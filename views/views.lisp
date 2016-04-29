@@ -1,6 +1,6 @@
 ;;;; templates.lisp
 
-(in-package #:cu-openstack)
+(in-package #:views)
 
 ;;; Template functions that generate HTML are defined here.
 
@@ -33,7 +33,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
 
 ;;; Template definitions
 
-(defun make-login-page ()
+(defun login ()
   "Creates the log-in page."
   (cl-who:with-html-output-to-string (output-string nil :prologue t :indent t)
     (with-default-html-template (output-string "Welcome to CU OpenStack System"
@@ -44,7 +44,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
             (:div :id "login-box-header"
                   (:p "Welcome to CU OpenStack System"))
             (:div :id "login-box-body"
-                  (:form :action "/auth" :method "post"
+                  (:form :action "/login" :method "post"
                          (:p "Username:" (:br)
                              (:input :type "text" :name "username"))
                          (:br)
@@ -60,57 +60,57 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                (cl-who:fmt "~A, " year))
              "Smith Dhumbumroong")))))
 
-(defun make-vm-provisioning-main-content (output-stream vm-name vm-status)
-  (cond ((string= "ACTIVE" (getf vm-status :status))
-         (cl-who:with-html-output (output-stream nil :indent t)
-           (:p "You have 1 active virtual machine instant:")
-           (:br)
-           (:div :class "vm-spec-container"
-                 (:h4 (cl-who:str vm-name))
-                 (:hr)
-                 (:br)
-                 (:table
-                  (:tr
-                   (:td (:b "Status:"))
-                   (:td (cl-who:str (getf vm-status :status))))
-                  (:tr
-                   (:td (:b "CPU:"))
-                   (:td "1 vCPU"))
-                  (:tr
-                   (:td (:b "Memory:"))
-                   (:td "512 MB"))
-                  (:tr
-                   (:td (:b "HDD:"))
-                   (:td "1 GB"))
-                  (:tr
-                   (:td (:b "Floating IP:"))
-                   (:td (cl-who:str (cdr (assoc "floating" (getf vm-status :addresses)
-                                                :test #'string=)))))))))
-        (t
-         (cl-who:with-html-output (output-stream nil :indent t)
-           (:p "Currently, you don't have any active virtual machine instant.")
-           (:br)
-           (:p "Based on your credential, you have access to the following virtual machine:" )
-           (:br)
-           (:div :class "vm-spec-container"
-                 (:h4 (cl-who:str vm-name))
-                 (:hr)
-                 (:br)
-                 (:table
-                  (:tr
-                   (:td (:b "CPU:"))
-                   (:td "1 vCPU"))
-                  (:tr
-                   (:td (:b "Memory:"))
-                   (:td "512 MB"))
-                  (:tr
-                   (:td (:b "HDD:"))
-                   (:td "1 GB"))))
-           (:br)
-           (:div :class "link-container"
-                 (:a :href "/launch-a-new-instant" "Launch a new instant"))))))
+;;(defun vm-provisioning-main-content (output-stream vm-name vm-status)
+;;  (cond ((string= "ACTIVE" (getf vm-status :status))
+;;         (cl-who:with-html-output (output-stream nil :indent t)
+;;           (:p "You have 1 active virtual machine instant:")
+;;           (:br)
+;;           (:div :class "vm-spec-container"
+;;                 (:h4 (cl-who:str vm-name))
+;;                 (:hr)
+;;                 (:br)
+;;                 (:table
+;;                  (:tr
+;;                   (:td (:b "Status:"))
+;;                   (:td (cl-who:str (getf vm-status :status))))
+;;                  (:tr
+;;                   (:td (:b "CPU:"))
+;;                   (:td "1 vCPU"))
+;;                  (:tr
+;;                   (:td (:b "Memory:"))
+;;                   (:td "512 MB"))
+;;                  (:tr
+;;                   (:td (:b "HDD:"))
+;;                   (:td "1 GB"))
+;;                  (:tr
+;;                   (:td (:b "Floating IP:"))
+;;                   (:td (cl-who:str (cdr (assoc "floating" (getf vm-status :addresses)
+;;                                                :test #'string=)))))))))
+;;        (t
+;;         (cl-who:with-html-output (output-stream nil :indent t)
+;;           (:p "Currently, you don't have any active virtual machine instant.")
+;;           (:br)
+;;           (:p "Based on your credential, you have access to the following virtual machine:" )
+;;           (:br)
+;;           (:div :class "vm-spec-container"
+;;                 (:h4 (cl-who:str vm-name))
+;;                 (:hr)
+;;                 (:br)
+;;                 (:table
+;;                  (:tr
+;;                   (:td (:b "CPU:"))
+;;                   (:td "1 vCPU"))
+;;                  (:tr
+;;                   (:td (:b "Memory:"))
+;;                   (:td "512 MB"))
+;;                  (:tr
+;;                   (:td (:b "HDD:"))
+;;                   (:td "1 GB"))))
+;;           (:br)
+;;           (:div :class "link-container"
+;;                 (:a :href "/launch-a-new-instant" "Launch a new instant"))))))
 
-(defun make-vm-provisioning-main-page (&key vm-name vm-status (page-uri "/") (realname "nil"))
+(defun vm-provisioning (&key vm-name vm-status (page-uri "/") (realname "nil"))
   (cl-who:with-html-output-to-string (output-string nil :prologue t :indent t)
     (with-default-html-template (output-string "CU OpenStack System"
                                                "/static/css/main-page.css")
@@ -132,7 +132,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                   (:h1 "Your Virtual Machine Status")
                   (:hr)
                   (:br)
-                  (make-vm-provisioning-main-content output-string vm-name vm-status)))
+                  "OpenStack goes here!"))
       (:div :id "watermark"
             (:p
              "Copyright "
