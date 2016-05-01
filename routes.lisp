@@ -13,15 +13,16 @@
     (login-page :uri "/login") ((username :request-type :post)
                                 (password :request-type :post))
   "Login page that handles user authentication."
-  (cond ((string= (hunchentoot:request-method*) :post)
-         (if (models:verify-user-credential username password)
-             (progn
-               (hunchentoot:start-session)
-               (setf (hunchentoot:session-value :username) username)
-               (hunchentoot:redirect #U/users/{username}/vm-provisioning))
-             (views:login)))
-        ((string= (hunchentoot:request-method*) :get)
-         (views:login))))
+  (case (hunchentoot:request-method*)
+    (:post
+     (if (models:verify-user-credential username password)
+         (progn
+           (hunchentoot:start-session)
+           (setf (hunchentoot:session-value :username) username)
+           (hunchentoot:redirect #U/users/{username}/vm-provisioning))
+         (views:login)))
+    (:get
+     (views:login))))
 
 (hunchentoot:define-easy-handler
     (vm-provisioning
