@@ -18,9 +18,10 @@
 
 (defun init-db (&key (database :sqlite3))
   "Initializes and creates a connection to a database."
-  (cond ((string= database :sqlite3)
-         (let ((db-file (merge-pathnames "db.sqlite")))
-           (datafly:connect-toplevel :sqlite3 :database-name db-file)
-           (initialize-db-data)))
-        (t
-         (error "Please specify a valid database."))))
+  (case database
+    (:sqlite3
+     (let ((db-file (merge-pathnames "db.sqlite")))
+       (datafly:connect-toplevel :sqlite3 :database-name db-file)
+       (initialize-db-data)))
+    (otherwise
+     (error "Please specify a valid database."))))
