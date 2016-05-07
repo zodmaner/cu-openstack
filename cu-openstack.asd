@@ -16,7 +16,8 @@
                         :components
                         ((:file "package")
                          (:file "models")
-                         (:file "authentication")))
+                         (:file "authentication")
+                         (:file "openstack")))
                (:module "views"
                         :serial t
                         :components

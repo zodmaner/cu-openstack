@@ -2,7 +2,9 @@
 
 (defpackage #:views
   (:use #:cl)
+  (:import-from #:trivial-openstack
+                #:get-value)
   (:export #:login
-           #:vm-provisioning))
+           #:vm-management))
 
 (uri-template:enable-uri-template-syntax)
