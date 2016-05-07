@@ -44,7 +44,6 @@
         (case (hunchentoot:request-method*)
           (:get
            (models:os-authenticate "localhost" "dummy" "swordfish")
-           
            (views:vm-management :username username
                                 :vm-name vm-name
                                 :vm-status (models:os-vm-instant-status vm-name)
