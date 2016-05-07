@@ -9,14 +9,25 @@ of bugs, breakages, and missing features.
 
 ## Getting Started
 
-Just initialize the database and start the server using the following commands:
+Start by initializing a configuration file by invoking the following function:
+
+````lisp
+CU-OPENSTACK> (models:init-config)
+````
+
+This will create a configuration file named config.json.
+
+Edit the configuration file and supply it with the host of the
+Keystone service and a username and password of an OpenStack user that
+has the appropriate permission, then initialize the database and start
+the server using the following commands:
 
 ````lisp
 CU-OPENSTACK> (models:init-db)
 CU-OPENSTACK> (start-easy-server 8080)
 ````
 
-Then points your browser at http://localhost:8080 (assuming you are
+And points your browser at http://localhost:8080 (assuming you are
 using the same port as the example above).
 
 Note that CU-openstack requires an access to a running instant of an

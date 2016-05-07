@@ -3,6 +3,8 @@
 (defpackage #:models
   (:use #:cl #:trivial-openstack)
   (:export #:init-db
+           #:init-config
+           #:get-config-info
            #:retrieve-user-info
            #:verify-user-credential
            #:os-authenticate

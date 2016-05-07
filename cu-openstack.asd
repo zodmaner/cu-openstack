@@ -16,6 +16,7 @@
                         :components
                         ((:file "package")
                          (:file "models")
+                         (:file "config")
                          (:file "authentication")
                          (:file "openstack")))
                (:module "views"

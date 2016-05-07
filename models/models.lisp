@@ -35,3 +35,11 @@
   (datafly:retrieve-one (sxql:select (:realname :role :image :flavor)
                           (sxql:from :user)
                           (sxql:where (:= :username username)))))
+
+(defun init-config (&key (path (merge-pathnames "config.json")))
+  "Creates and initializes a configuration file."
+  (write-config-file path))
+
+(defun get-config-info (&key (path (merge-pathnames "config.json")))
+  "Reads and returns a list containing configuration info."
+  (read-config-file path))

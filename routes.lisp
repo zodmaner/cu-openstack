@@ -40,10 +40,13 @@
       (let ((username (hunchentoot:session-value :username))
             (vm-name (hunchentoot:session-value :vm-name))
             (user-info (models:retrieve-user-info
-                        (hunchentoot:session-value :username))))
+                        (hunchentoot:session-value :username)))
+            (config-info (models:get-config-info)))
         (case (hunchentoot:request-method*)
           (:get
-           (models:os-authenticate "localhost" "dummy" "swordfish")
+           (models:os-authenticate (first config-info)
+                                   (second config-info)
+                                   (third config-info))
            (views:vm-management :username username
                                 :vm-name vm-name
                                 :vm-status (models:os-vm-instant-status vm-name)
