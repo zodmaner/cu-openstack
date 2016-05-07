@@ -25,12 +25,12 @@ testing/development purposes) in order to function properly.
 
 ## Dependencies
 
-* trivial-openstack
-* hunchentoot
-* cl-who
-* cl-pass
-* datafly
-* uri-template
+* **trivial-openstack**
+* **hunchentoot**
+* **cl-who**
+* **cl-pass**
+* **datafly**
+* **uri-template**
 
 ## License
 
