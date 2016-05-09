@@ -36,7 +36,7 @@
                   (hunchentoot:request-uri request)
                 (string= username (hunchentoot:session-value :username))))) ()
   "Virtual machine management page."
-  (if (string/= "" (hunchentoot:session-value :username))
+  (if (not (null hunchentoot:*session*))
       (let ((username (hunchentoot:session-value :username))
             (vm-name (hunchentoot:session-value :vm-name))
             (user-info (models:retrieve-user-info
