@@ -119,7 +119,7 @@ page-title as the page's title and path-to-css as a path to the page's CSS."
                               (:table
                                (:tr
                                 (:td (:b "Status:"))
-                                (:td (cl-who:str (getf vm-status :status))))
+                                (:td (cl-who:str vm-status)))
                                (:tr
                                 (:td (:b "Image:"))
                                 (:td (cl-who:str vm-image)))
