@@ -11,7 +11,7 @@
 (defun os-vm-instant-status (instant-name)
   "Returns the current status of a virtual machine instant with the
   specified name."
-  (get-value (get-value (list-servers-details) instant-name) "status"))
+  (get-value (list-servers-details) instant-name "status"))
 
 (defun os-list-flavor-details (flavor-id)
   "Lists details of a flavor of a given ID."
@@ -19,11 +19,7 @@
 
 (defun os-get-vm-instant-floating-ip (instant-name)
   "Retrieves the floating IP of a virtual machine instant."
-  (get-value
-   (get-value
-    (get-value (list-servers-details) instant-name)
-    "addresses")
-   "floating"))
+  (get-value (list-servers-details) instant-name "addresses" "floating"))
 
 (defun os-get-image-id (image-name)
   "Retrieves the image ID given image name."
